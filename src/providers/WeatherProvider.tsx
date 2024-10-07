@@ -50,6 +50,7 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           q: `${currentLocation?.lat},${currentLocation?.lng}`,
           days: "6",
           aqi: "yes",
+          lang: "fr",
         };
 
         const url = new URL(API_ENDPOINT);

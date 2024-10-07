@@ -1,6 +1,7 @@
 :root {
   --background: rgb(241, 241, 241);
   --text-primary: rgb(16, 16, 16);
+  --transparent-text: rgba(16, 16, 16, 0.7);
   --text-secondary: royalblue;
   --accent: purple;
 }
@@ -8,6 +9,7 @@
 :root[data-theme='dark'] {
   --background: rgb(16, 16, 16);
   --text-primary: rgb(241, 241, 241);
+  --transparent-text: rgba(241, 241, 241, 0.7);
   --text-secondary: grey;
   --accent: darkred;
 }
