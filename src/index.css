@@ -12,6 +12,10 @@
   --accent: darkred;
 }
 
+* {
+  box-sizing: border-box;
+}
+
 html {
   background-color: var(--background);
   color: var(--text-primary);
