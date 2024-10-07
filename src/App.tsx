@@ -1,4 +1,5 @@
-import "./App.css";
+import "./App.scss";
+import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
 import Header from "./components/Header/Header";
 
 function App() {
@@ -6,6 +7,10 @@ function App() {
     <div className="layout">
       {/* Header */}
       <Header />
+      {/* Main */}
+      <main>
+        <CurrentWeather />
+      </main>
     </div>
   );
 }

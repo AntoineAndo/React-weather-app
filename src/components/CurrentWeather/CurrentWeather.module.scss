@@ -1,0 +1,36 @@
+.currentWeatherContainer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
+
+    .weatherIcon {
+        width: 100px;
+        height: 100px;
+    }
+
+    .currentWeatherDetailContainer {
+        display: flex;
+        align-items: center;
+
+        .currentTemperature {
+            font-size: 72px;
+            font-weight: bold;
+        }
+
+        .secondaryInfo {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            & p {
+                font-size: 24px;
+            }
+        }
+    }
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
