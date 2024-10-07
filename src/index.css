@@ -1,12 +1,12 @@
 :root {
-  --background: white;
+  --background: rgb(241, 241, 241);
   --text-primary: black;
   --text-secondary: royalblue;
   --accent: purple;
 }
 
 :root[data-theme='dark'] {
-  --background: black;
+  --background: rgb(16, 16, 16);
   --text-primary: white;
   --text-secondary: grey;
   --accent: darkred;
@@ -18,6 +18,8 @@ html {
 
   height: 100%;
   width: 100%;
+
+  transition: background 0.3s, color 0.3s;
 }
 
 body {
