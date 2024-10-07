@@ -5,7 +5,7 @@
   --accent: purple;
 }
 
-[data-theme='dark'] {
+:root[data-theme='dark'] {
   --background: black;
   --text-primary: white;
   --text-secondary: grey;
