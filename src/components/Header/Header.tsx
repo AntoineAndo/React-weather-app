@@ -7,6 +7,8 @@ type Props = {};
 function Header({}: Props) {
   const { weather, loading: weatherLoading } = useWeather();
 
+  const openSearch = () => {};
+
   return (
     <header className={style.header}>
       <div className={style.themeToggleSlot}>
@@ -18,7 +20,9 @@ function Header({}: Props) {
           ? `${weather.location.name}, ${weather.location.country}`
           : "---"}
       </h1>
-      <button className={style.searchButton}>🔍</button>
+      <button className={style.searchButton} onClick={openSearch}>
+        🔍
+      </button>
     </header>
   );
 }

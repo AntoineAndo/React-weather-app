@@ -1,13 +1,13 @@
 :root {
   --background: rgb(241, 241, 241);
-  --text-primary: black;
+  --text-primary: rgb(16, 16, 16);
   --text-secondary: royalblue;
   --accent: purple;
 }
 
 :root[data-theme='dark'] {
   --background: rgb(16, 16, 16);
-  --text-primary: white;
+  --text-primary: rgb(241, 241, 241);
   --text-secondary: grey;
   --accent: darkred;
 }
