@@ -1,4 +1,3 @@
-import React from "react";
 import style from "./ThemeToggle.module.scss";
 import { useSettings } from "../../providers/SettingsProvider";
 

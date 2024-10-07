@@ -1,4 +1,3 @@
-import React from "react";
 import style from "./Header.module.scss";
 import ThemeToggle from "../ThemeToggle/ThemeToggle";
 import { useWeather } from "../../providers/WeatherProvider";
