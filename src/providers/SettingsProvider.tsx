@@ -72,10 +72,11 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, [theme]);
 
   const toggleTheme = () => {
-    setTheme((prevTheme) => (prevTheme === "light" ? "dark" : "light"));
+    const newTheme = theme === "light" ? "dark" : "light";
+    setTheme(newTheme);
 
     // Save the theme to local storage
-    localStorage.setItem("theme", theme);
+    localStorage.setItem("theme", newTheme);
   };
 
   return (
