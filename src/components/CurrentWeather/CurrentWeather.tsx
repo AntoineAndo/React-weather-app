@@ -4,11 +4,9 @@ import style from "./CurrentWeather.module.scss";
 type Props = {};
 
 function CurrentWeather({}: Props) {
-  const { weather, loading } = useWeather();
+  const { weather, weatherLoading } = useWeather();
 
-  console.log(weather);
-
-  if (loading) {
+  if (weatherLoading) {
     return <p>Loading...</p>;
   }
 
@@ -17,21 +15,27 @@ function CurrentWeather({}: Props) {
   }
 
   return (
-    <main className={style.currentWeatherContainer}>
-      {/* <h2>{weather.current.condition.text}</h2> */}
+    <div className={style.currentWeatherContainer}>
+      <p>Today {new Date().toLocaleDateString("fr-FR")}</p>
       <img
         src={weather.current.condition.icon}
         alt={weather.current.condition.text}
         className={style.weatherIcon}
       />
+      <p className={style.currentTemperature}>{weather.current.temp_c}°</p>
       <div className={style.currentWeatherDetailContainer}>
-        <p className={style.currentTemperature}>{weather.current.temp_c}°</p>
-        <div className={style.secondaryInfo}>
-          <p className={style.currentTemperature}>{weather.current.humidity}</p>
-          <p className={style.currentTemperature}>{weather.current.wind_kph}</p>
+        {/* Humidity */}
+        <div>
+          <p className={style.label}>Humidity</p>
+          <p className={style.detail}>{weather.current.humidity}</p>
+        </div>
+        {/* Wind */}
+        <div>
+          <p className={style.label}>Wind (km/h)</p>
+          <p className={style.detail}>{weather.current.wind_kph}</p>
         </div>
       </div>
-    </main>
+    </div>
   );
 }
 

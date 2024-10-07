@@ -15,7 +15,7 @@ interface WeatherData {
 
 interface WeatherContextProps {
   weather: WeatherData | null;
-  loading: boolean;
+  weatherLoading: boolean;
   error: string | null;
 }
 
@@ -36,18 +36,20 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   // todo weatherdata type
   const [weather, setWeather] = useState<any | null>(null);
-  const [loading, setLoading] = useState<boolean>(true);
+  const [weatherLoading, setWeatherLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchWeather = async () => {
       try {
-        const API_ENDPOINT = import.meta.env.VITE_WEATHER_API_ENDPOINT;
+        const API_ENDPOINT = import.meta.env.VITE_FORECAST_API_ENDPOINT;
         const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
         const params = {
           key: API_KEY,
           q: `${currentLocation?.lat},${currentLocation?.lng}`,
+          days: "6",
+          aqi: "yes",
         };
 
         const url = new URL(API_ENDPOINT);
@@ -61,10 +63,10 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
         setWeather(data);
 
-        setLoading(false);
+        setWeatherLoading(false);
       } catch (err: any) {
         setError(err.message);
-        setLoading(false);
+        setWeatherLoading(false);
       }
     };
 
@@ -72,7 +74,7 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   }, []);
 
   return (
-    <WeatherContext.Provider value={{ weather, loading, error }}>
+    <WeatherContext.Provider value={{ weather, weatherLoading, error }}>
       {children}
     </WeatherContext.Provider>
   );
