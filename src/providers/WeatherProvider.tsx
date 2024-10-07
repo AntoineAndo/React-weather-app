@@ -1,4 +1,10 @@
-import React, { createContext, useState, useEffect, ReactNode } from "react";
+import React, {
+  createContext,
+  useState,
+  useEffect,
+  ReactNode,
+  useContext,
+} from "react";
 import { useSettings } from "./SettingsProvider";
 
 interface WeatherData {
@@ -17,10 +23,19 @@ const WeatherContext = createContext<WeatherContextProps | undefined>(
   undefined
 );
 
+export const useWeather = () => {
+  const context: any = useContext(WeatherContext);
+  if (!context) {
+    throw new Error("useWeather must be used within a WeatherProvider");
+  }
+  return context;
+};
+
 const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const { currentLocation } = useSettings();
 
-  const [weather, setWeather] = useState<WeatherData | null>(null);
+  // todo weatherdata type
+  const [weather, setWeather] = useState<any | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -43,11 +58,9 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           throw new Error("Failed to fetch weather data");
         }
         const data = await response.json();
-        console.log(data);
-        // setWeather({
-        //   temperature: data.temperature,
-        //   description: data.description,
-        // });
+
+        setWeather(data);
+
         setLoading(false);
       } catch (err: any) {
         setError(err.message);

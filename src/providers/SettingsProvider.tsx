@@ -53,7 +53,6 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
             lng: position.coords.longitude.toString(),
           };
           setCurrentLocation(location);
-          console.log(location);
           // Save the location to local storage
           localStorage.setItem("location", JSON.stringify(location));
         },
@@ -63,8 +62,8 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         }
       );
     } else {
-      console.log("Location already set");
-      console.log("Location", currentLocation);
+      // console.log("Location already set");
+      // console.log("Location", currentLocation);
     }
   }, [localLocation]);
 
