@@ -23,7 +23,6 @@ function ForecastCard({ forecast, isLoading }: Props) {
     setIsExpanded(!isExpanded);
   };
 
-  //   console.log(forecast);
   return (
     <div className={style.card} onClick={toggleCard}>
       {isLoading ? (

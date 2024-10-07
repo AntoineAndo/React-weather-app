@@ -41,38 +41,41 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   useEffect(() => {
     const fetchWeather = async () => {
-      try {
-        const API_ENDPOINT = import.meta.env.VITE_FORECAST_API_ENDPOINT;
-        const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
+      console.log("currentLocation", currentLocation);
+      if (currentLocation) {
+        try {
+          const API_ENDPOINT = import.meta.env.VITE_FORECAST_API_ENDPOINT;
+          const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
 
-        const params = {
-          key: API_KEY,
-          q: `${currentLocation?.lat},${currentLocation?.lng}`,
-          days: "6",
-          aqi: "yes",
-          lang: "fr",
-        };
+          const params = {
+            key: API_KEY,
+            q: `${currentLocation?.latitude},${currentLocation?.longitude}`,
+            days: "6",
+            aqi: "yes",
+            lang: "fr",
+          };
 
-        const url = new URL(API_ENDPOINT);
-        url.search = new URLSearchParams(params).toString();
+          const url = new URL(API_ENDPOINT);
+          url.search = new URLSearchParams(params).toString();
 
-        const response = await fetch(url.toString());
-        if (!response.ok) {
-          throw new Error("Failed to fetch weather data");
+          const response = await fetch(url.toString());
+          if (!response.ok) {
+            throw new Error("Failed to fetch weather data");
+          }
+          const data = await response.json();
+
+          setWeather(data);
+
+          setWeatherLoading(false);
+        } catch (err: any) {
+          setError(err.message);
+          setWeatherLoading(false);
         }
-        const data = await response.json();
-
-        setWeather(data);
-
-        setWeatherLoading(false);
-      } catch (err: any) {
-        setError(err.message);
-        setWeatherLoading(false);
       }
     };
 
     fetchWeather();
-  }, []);
+  }, [currentLocation]);
 
   return (
     <WeatherContext.Provider value={{ weather, weatherLoading, error }}>

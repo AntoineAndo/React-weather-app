@@ -8,8 +8,6 @@ type Props = {};
 function CurrentWeather({}: Props) {
   const { weather, weatherLoading } = useWeather();
 
-  console.log(weather);
-
   return (
     <div className={style.currentWeatherContainer}>
       {weatherLoading ? (
@@ -37,11 +35,11 @@ function CurrentWeather({}: Props) {
             {/* Air quality */}
             <div>
               <p className={style.label}>Qualité d'air</p>
-              <p className={style.detail}>
+              <div className={style.detail}>
                 <AirQualityIcon
                   value={weather.current.air_quality["gb-defra-index"]}
                 />
-              </p>
+              </div>
             </div>
           </div>
         </React.Fragment>

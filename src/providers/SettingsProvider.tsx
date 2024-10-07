@@ -10,11 +10,18 @@ type Theme = "light" | "dark";
 
 interface SettingsContextType {
   currentLocation?: {
-    lat: string;
-    lng: string;
+    latitude: number;
+    longitude: number;
   };
   theme: Theme;
   toggleTheme: () => void;
+  saveLocation: ({
+    latitude,
+    longitude,
+  }: {
+    latitude: number;
+    longitude: number;
+  }) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -36,21 +43,48 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
 
   // Get the current location from local storage
   const localLocation = localStorage.getItem("location");
+
+  // If the location is set, use it as the initial location
+  // If any of the latitude or longitude is missing, the location is invalid and set to undefined
+  const initialLocation =
+    localLocation &&
+    JSON.parse(localLocation).latitude &&
+    JSON.parse(localLocation).longitude
+      ? JSON.parse(localLocation)
+      : undefined;
+
+  // localStorage.removeItem("recentLocations");
+
   // If the location is not set, request user's location
   const [currentLocation, setCurrentLocation] = useState<{
-    lat: string;
-    lng: string;
-  }>(localLocation ? JSON.parse(localLocation) : undefined);
+    latitude: number;
+    longitude: number;
+  }>(initialLocation);
+
+  // Save the location to local storage
+  // Will trigger a re-fetch of the weather data using the new location
+  const saveLocation = ({
+    latitude,
+    longitude,
+  }: {
+    latitude: number;
+    longitude: number;
+  }) => {
+    const location = { latitude, longitude };
+    setCurrentLocation(location);
+    // Save the location to local storage
+    localStorage.setItem("location", JSON.stringify(location));
+  };
 
   useEffect(() => {
     // If the user's last position is not saved in local storage
     // Request the user's location
-    if (!localLocation) {
+    if (!initialLocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const location = {
-            lat: position.coords.latitude.toString(),
-            lng: position.coords.longitude.toString(),
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
           };
           setCurrentLocation(location);
           // Save the location to local storage
@@ -67,10 +101,13 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [localLocation]);
 
+  // Set the theme on the root element
   useEffect(() => {
     document.documentElement.setAttribute("data-theme", theme);
   }, [theme]);
 
+  // Toggle the theme between light and dark
+  // Save the theme to local storage
   const toggleTheme = () => {
     const newTheme = theme === "light" ? "dark" : "light";
     setTheme(newTheme);
@@ -80,7 +117,9 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   };
 
   return (
-    <SettingsContext.Provider value={{ theme, toggleTheme, currentLocation }}>
+    <SettingsContext.Provider
+      value={{ theme, toggleTheme, currentLocation, saveLocation }}
+    >
       {children}
     </SettingsContext.Provider>
   );
