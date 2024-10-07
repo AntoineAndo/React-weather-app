@@ -3,7 +3,6 @@ import style from "./ForecastCard.module.scss";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import localeData from "dayjs/plugin/localeData";
-// import localeData from 'dayjs/plugin/localeData' // ES 2015
 
 dayjs.extend(localeData);
 dayjs.extend(isoWeek);
@@ -39,7 +38,7 @@ function ForecastCard({ forecast, isLoading }: Props) {
 
             {/* Card title */}
             <p className={style.title}>
-              {WEEK_NAMES[dayjs(forecast.date).isoWeekday()]}
+              {WEEK_NAMES[dayjs(forecast.date).day()]}
               {". "}
               {dayjs(forecast.date).format("DD/MM")}
             </p>
