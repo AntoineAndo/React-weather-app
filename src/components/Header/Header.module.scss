@@ -3,7 +3,8 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px;
-ZZ
+    position: relative;
+
     .themeToggleSlot {
         flex: 1;
     }
@@ -43,5 +44,13 @@ ZZ
         input {
             width: 100%;
         }
+    }
+
+    .modalAnchor {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+
+        width: 100%;
     }
 }

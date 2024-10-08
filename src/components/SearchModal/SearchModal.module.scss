@@ -1,28 +1,21 @@
-.backdrop  {
+.modal  {
     position: absolute;
-    width: 100vw;
-    height: 100vh;
     top: 0;
     left: 0;
-    padding: 10;
 
-    background: rgba(0, 0, 0, 0.5);
-    backdrop-filter: blur(10px);
+    height: 100vh;
+    width: 100%;
+
+    padding: 20px;
+
+    // background: rgba(0, 0, 0, 0.5);
+    // backdrop-filter: blur(10px);
 
     display: flex;
-    justify-content: center;
-    align-items: center;
-
-    .modal {
-        display: flex;
-        flex-direction: column;
-
-        height: 50%;
-        width: 75%;
+    flex-direction: column;
+    
+    background: var(--background);
         
-        padding: 20px;
-        border-radius: 35px;
-        background: var(--background-2);
         
         .inputContainer {
             border: solid 1px var(--text-primary);
@@ -68,6 +61,5 @@
                 width: 100%;
             }
         }
-    }
 
 }

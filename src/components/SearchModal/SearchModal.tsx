@@ -2,11 +2,11 @@ import { Fragment, useState } from "react";
 import style from "./SearchModal.module.scss";
 import { Location, useSettings } from "../../providers/SettingsProvider";
 
-type Props = {
-  onBlur: Function;
-};
+interface Props {
+  closeModal: Function;
+}
 
-function SearchModal({ onBlur }: Props) {
+function SearchModal({ closeModal }: Props) {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
   const { saveLocation } = useSettings();
@@ -58,99 +58,91 @@ function SearchModal({ onBlur }: Props) {
           longitude: position.coords.longitude,
         },
       });
-      onBlur();
+      closeModal();
     });
   };
 
   //   Save the selected location and close the modal
   const onLocationClick = (suggestion: Location) => {
     saveLocation(suggestion);
-    onBlur();
+    closeModal();
   };
 
   return (
-    <div className={style.backdrop} onPointerUp={() => onBlur()}>
-      <div
-        className={style.modal}
-        onPointerUp={(e) => {
-          // Prevent the click from propagating to the backdrop and closing the modal
-          e.stopPropagation();
-        }}
-      >
-        {/* Search input */}
-        <div className={style.inputContainer}>
-          <input
-            type="text"
-            className={style.input}
-            value={searchValue}
-            onChange={onChange}
-          />
+    <div className={style.modal}>
+      {/* Search input */}
+      <div className={style.inputContainer}>
+        <input
+          type="text"
+          className={style.input}
+          value={searchValue}
+          onChange={onChange}
+        />
 
-          {/* Button to clear the field */}
-          <span className={style.close} onClick={clearSearch}>
-            <i className="fa fa-times" aria-hidden="true"></i>
-          </span>
-        </div>
+        {/* Button to clear the field */}
+        <span className={style.close} onClick={clearSearch}>
+          <i className="fa fa-times" aria-hidden="true"></i>
+        </span>
+      </div>
 
-        {/* 
+      {/* 
         Suggestion list 
         Display the recent locations and the current location button
         If the search input is not empty, display the search results
         */}
-        <ul>
-          {/* Search results */}
-          {searchValue !== "" && (
-            <Fragment>
-              {/* Exact search - Search the exact value of the input */}
-              <li
-                onClick={() =>
-                  onLocationClick({
-                    name: searchValue,
-                  })
-                }
-              >
-                {searchValue}
-              </li>
-              <hr />
+      <ul>
+        {/* Search results */}
+        {searchValue !== "" && (
+          <Fragment>
+            {/* Exact search - Search the exact value of the input */}
+            <li
+              onClick={() =>
+                onLocationClick({
+                  name: searchValue,
+                })
+              }
+            >
+              {searchValue}
+            </li>
+            <hr />
 
-              {searchResults.map((suggestion: any, index: number) => {
-                return (
-                  <Fragment>
-                    <li onClick={() => onLocationClick(suggestion)}>
-                      {suggestion.name}
-                    </li>
-                    {index !== searchResults.length - 1 && <hr />}
-                  </Fragment>
-                );
-              })}
-            </Fragment>
-          )}
+            {searchResults.map((suggestion: any, index: number) => {
+              return (
+                <Fragment>
+                  <li onClick={() => onLocationClick(suggestion)}>
+                    {suggestion.name}
+                  </li>
+                  {index !== searchResults.length - 1 && <hr />}
+                </Fragment>
+              );
+            })}
+          </Fragment>
+        )}
 
-          {/* Default suggestions */}
-          {searchValue === "" && (
-            <Fragment>
-              {/* Option to set the current user's location */}
-              <li onClick={() => setCurrentUserLocation()}>
-                <i className="fa fa-location-arrow" aria-hidden="true"></i>
-                Position actuelle
-              </li>
-              <hr />
+        {/* Default suggestions */}
+        {searchValue === "" && (
+          <Fragment>
+            {/* Option to set the current user's location */}
+            <li onClick={() => setCurrentUserLocation()}>
+              <i className="fa fa-location-arrow" aria-hidden="true"></i>
+              Position actuelle
+            </li>
+            <hr />
 
-              {/* Recent locations */}
-              {recentLocations.map((location: any, index: number) => {
-                return (
-                  <Fragment>
-                    <li onClick={() => onLocationClick(location)}>
-                      {location.name}
-                    </li>
-                    {index !== recentLocations.length - 1 && <hr />}
-                  </Fragment>
-                );
-              })}
-            </Fragment>
-          )}
-        </ul>
-      </div>
+            {/* Recent locations */}
+            {recentLocations.map((location: any, index: number) => {
+              return (
+                <Fragment>
+                  <li onClick={() => onLocationClick(location)}>
+                    {location.name}
+                  </li>
+                  {index !== recentLocations.length - 1 && <hr />}
+                </Fragment>
+              );
+            })}
+          </Fragment>
+        )}
+      </ul>
     </div>
   );
 }

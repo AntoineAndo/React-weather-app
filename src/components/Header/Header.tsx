@@ -29,9 +29,11 @@ function Header({}: Props) {
         🔍
       </button>
 
-      {isSearchVisible && (
-        <SearchModal onBlur={() => setIsSearchVisible(false)} />
-      )}
+      <div className={style.modalAnchor}>
+        {isSearchVisible && (
+          <SearchModal closeModal={() => setIsSearchVisible(false)} />
+        )}
+      </div>
     </header>
   );
 }
