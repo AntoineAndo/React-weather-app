@@ -1,5 +1,4 @@
 import { useState } from "react";
-import style from "./ForecastCard.module.scss";
 import dayjs from "dayjs";
 import isoWeek from "dayjs/plugin/isoWeek";
 import localeData from "dayjs/plugin/localeData";
@@ -23,21 +22,26 @@ function ForecastCard({ forecast, isLoading }: Props) {
   };
 
   return (
-    <div className={style.card} onClick={toggleCard}>
+    <div
+      className="border-solid border-2 border-[color:--text-primary] rounded-xl"
+      onClick={toggleCard}
+    >
       {isLoading ? (
-        <div className={style.loader}></div>
+        // Loader
+        <div className="min-h-20 bg-loader bg-loaderSize opacity-50 animate-load"></div>
       ) : (
         <>
-          <div className={style.header}>
+          {/* Header */}
+          <div className="flex justify-between items-center gap-3 w-full min-h-20 p-3 cursor-pointer">
             {/* Icon */}
             <img
-              className={style.icon}
+              className="h-8 w-8"
               src={forecast.day.condition.icon}
               alt={forecast.day.condition.text}
             />
 
             {/* Card title */}
-            <p className={style.title}>
+            <p className="flex flex-1 text-lg">
               {WEEK_NAMES[dayjs(forecast.date).day()]}
               {". "}
               {dayjs(forecast.date).format("DD/MM")}
@@ -48,7 +52,7 @@ function ForecastCard({ forecast, isLoading }: Props) {
 
           {/* Card body */}
           {isExpanded && (
-            <div className={style.body}>{forecast.day.condition.text}</div>
+            <div className="p-3">{forecast.day.condition.text}</div>
           )}
         </>
       )}

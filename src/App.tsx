@@ -1,4 +1,3 @@
-import "./App.scss";
 import CurrentWeather from "./components/CurrentWeather/CurrentWeather";
 import ForecastList from "./components/ForecastList/ForecastList";
 import Header from "./components/Header/Header";
@@ -9,14 +8,7 @@ function App() {
       {/* Header */}
       <Header />
       {/* Main */}
-      <main
-        style={{
-          // Todo
-          display: "flex",
-          flexDirection: "column",
-          gap: 5,
-        }}
-      >
+      <main className="flex flex-col gap-2 p-3">
         <CurrentWeather />
         <ForecastList />
       </main>

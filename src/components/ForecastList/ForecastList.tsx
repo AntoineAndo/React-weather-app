@@ -8,18 +8,8 @@ const NUMBER_OF_FORECASTS = 5;
 function ForecastList({}: Props) {
   const { weather, weatherLoading } = useWeather();
 
-  // if (weatherLoading) {
-  //   return <p>Loading...</p>;
-  // }
-
   return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: "column",
-        gap: 5,
-      }}
-    >
+    <div className="flex flex-col gap-3">
       {/* For 0 to 5 */}
       {Array.from({ length: NUMBER_OF_FORECASTS }, (_, i) => {
         const forecast = weather?.forecast?.forecastday?.at(i + 1);

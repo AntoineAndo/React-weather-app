@@ -1,5 +1,4 @@
 import { Fragment, useState } from "react";
-import style from "./SearchModal.module.scss";
 import { Location, useSettings } from "../../providers/SettingsProvider";
 
 interface Props {
@@ -69,18 +68,22 @@ function SearchModal({ closeModal }: Props) {
   };
 
   return (
-    <div className={style.modal}>
+    // Modal
+    <div className="absolute top-0 left-0 h-screen w-full p-5 flex flex-col bg-[color:--background] gap-3">
       {/* Search input */}
-      <div className={style.inputContainer}>
+      <div className="border-solid border-2 border-[color:--text-primary] h-8 relative rounded-2xl ">
         <input
           type="text"
-          className={style.input}
+          className="px-4 w-full h-full outline-none color-[color:--text-primary]"
           value={searchValue}
           onChange={onChange}
         />
 
         {/* Button to clear the field */}
-        <span className={style.close} onClick={clearSearch}>
+        <span
+          className="absolute right-4 top-1/2 -translate-y-1/2 cursor-pointer"
+          onClick={clearSearch}
+        >
           <i className="fa fa-times" aria-hidden="true"></i>
         </span>
       </div>
@@ -90,12 +93,13 @@ function SearchModal({ closeModal }: Props) {
         Display the recent locations and the current location button
         If the search input is not empty, display the search results
         */}
-      <ul>
+      <ul className="flex flex-col gap-3 list-none p-3">
         {/* Search results */}
         {searchValue !== "" && (
           <Fragment>
             {/* Exact search - Search the exact value of the input */}
             <li
+              className="p-0 cursor-pointer flex gap-3 items-center"
               onClick={() =>
                 onLocationClick({
                   name: searchValue,
@@ -104,15 +108,20 @@ function SearchModal({ closeModal }: Props) {
             >
               {searchValue}
             </li>
-            <hr />
+            <hr className="w-full" />
 
             {searchResults.map((suggestion: any, index: number) => {
               return (
                 <Fragment>
-                  <li onClick={() => onLocationClick(suggestion)}>
+                  <li
+                    className="p-0 cursor-pointer flex gap-3 items-center"
+                    onClick={() => onLocationClick(suggestion)}
+                  >
                     {suggestion.name}
                   </li>
-                  {index !== searchResults.length - 1 && <hr />}
+                  {index !== searchResults.length - 1 && (
+                    <hr className="w-full" />
+                  )}
                 </Fragment>
               );
             })}
@@ -123,20 +132,28 @@ function SearchModal({ closeModal }: Props) {
         {searchValue === "" && (
           <Fragment>
             {/* Option to set the current user's location */}
-            <li onClick={() => setCurrentUserLocation()}>
+            <li
+              className="p-0 cursor-pointer flex gap-3 items-center"
+              onClick={() => setCurrentUserLocation()}
+            >
               <i className="fa fa-location-arrow" aria-hidden="true"></i>
               Position actuelle
             </li>
-            <hr />
+            <hr className="w-full border-[color:--text-primary]" />
 
             {/* Recent locations */}
             {recentLocations.map((location: any, index: number) => {
               return (
                 <Fragment>
-                  <li onClick={() => onLocationClick(location)}>
+                  <li
+                    className="p-0 cursor-pointer flex gap-3 items-center"
+                    onClick={() => onLocationClick(location)}
+                  >
                     {location.name}
                   </li>
-                  {index !== recentLocations.length - 1 && <hr />}
+                  {index !== recentLocations.length - 1 && (
+                    <hr className="w-full" />
+                  )}
                 </Fragment>
               );
             })}

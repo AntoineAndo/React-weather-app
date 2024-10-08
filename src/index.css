@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 :root {
   --background: rgb(241, 241, 241);
   --background-2: rgb(255, 255, 255);
@@ -20,6 +24,11 @@
   box-sizing: border-box;
 }
 
+button, input {
+  background: none;
+  border: none;
+}
+
 html {
   background-color: var(--background);
   color: var(--text-primary);
@@ -37,5 +46,13 @@ body {
 
   display: flex;
   flex-direction: column;
+}
 
+@keyframes wave {
+  0% {
+      background-position: 150% 0;
+  }
+  100% {
+      background-position: -50% 0;
+  }
 }

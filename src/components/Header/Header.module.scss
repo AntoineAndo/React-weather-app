@@ -4,6 +4,12 @@
   align-items: center;
   padding: 10px;
     position: relative;
+    font-size: 1em;
+    
+        
+    @media (min-width: 768px) {
+        font-size: 1.5em;
+    }
 
     .themeToggleSlot {
         flex: 1;
@@ -12,16 +18,21 @@
     .title {
         flex: 10;
         text-align: center;
-        font-size: 24px;
+        font-size: 1.5em;
         font-weight: bold;
     }
     
-    .searchButton {
+    .searchButtonContainer {
         display: flex;
         flex: 1;
+        justify-content: flex-end;
+    }
+
+    .searchButton {
+        display: flex;
         background: none;
         border: none;
-        font-size: 20px;
+        font-size: 1em;
         cursor: pointer;
         border: solid 1px var(--text-primary);
         border-radius: 100%;
@@ -32,6 +43,11 @@
 
         justify-content: center;
         align-items: center;
+
+        @media (min-width: 768px) {
+            width: 60px;
+            height: 60px;
+        }
     }
 
     .searchInputContainer {

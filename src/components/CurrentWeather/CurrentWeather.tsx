@@ -1,7 +1,7 @@
 import React from "react";
 import { useWeather } from "../../providers/WeatherProvider";
 import AirQualityIcon from "../AirQualityIcon/AirQualityIcon";
-import style from "./CurrentWeather.module.scss";
+// import style from "./CurrentWeather.module.scss";
 
 type Props = {};
 
@@ -9,36 +9,51 @@ function CurrentWeather({}: Props) {
   const { weather, weatherLoading } = useWeather();
 
   return (
-    <div className={style.currentWeatherContainer}>
+    <div className="flex flex-col justify-evenly items-center gap-5 h-[50vh] rounded-xl p-3">
       {weatherLoading ? (
         <p>Loading...</p>
       ) : (
         <React.Fragment>
-          <p>Today {new Date().toLocaleDateString("fr-FR")}</p>
-          <img
-            src={weather.current.condition.icon}
-            alt={weather.current.condition.text}
-            className={style.weatherIcon}
-          />
-          <p className={style.currentTemperature}>{weather.current.temp_c}°</p>
-          <div className={style.currentWeatherDetailContainer}>
-            {/* Humidity */}
-            <div>
-              <p className={style.label}>Humidité</p>
-              <p className={style.detail}>{weather.current.humidity}</p>
+          {/* Current date */}
+          <p className="text-2xl font-bold self-start">
+            Today {new Date().toLocaleDateString("fr-FR")}
+          </p>
+          <div className="flex flex-col w-full">
+            <div className="flex flex-col items-center">
+              {/* Icon for the current condition */}
+              <img
+                src={weather.current.condition.icon}
+                alt={weather.current.condition.text}
+                className="w-24 h-24 md:w-52 md:h-52"
+              />
+              {/* Current condition */}
+              <p>{weather.current.condition.text}</p>
+              {/* Current temperature */}
+              <p className="text-7xl font-bold self-center">
+                {weather.current.temp_c}°
+              </p>
             </div>
-            {/* Wind */}
-            <div>
-              <p className={style.label}>Vent (km/h)</p>
-              <p className={style.detail}>{weather.current.wind_kph}</p>
-            </div>
-            {/* Air quality */}
-            <div>
-              <p className={style.label}>Qualité d'air</p>
-              <div className={style.detail}>
-                <AirQualityIcon
-                  value={weather.current.air_quality["gb-defra-index"]}
-                />
+
+            {/* Day secondary info */}
+            <div className="flex gap-2 w-full justify-between box-border">
+              {/* Humidity */}
+              <div className="flex flex-col flex-1 items-center">
+                <p className="text-lg">Humidité</p>
+                <p className="text-5xl">{weather.current.humidity}</p>
+              </div>
+              {/* Wind */}
+              <div className="flex flex-col flex-1 items-center">
+                <p className="text-lg">Vent (km/h)</p>
+                <p className="text-5xl">{weather.current.wind_kph}</p>
+              </div>
+              {/* Air quality */}
+              <div className="flex flex-col flex-1 items-center">
+                <p className="text-lg">Qualité d'air</p>
+                <div className="text-5xl">
+                  <AirQualityIcon
+                    value={weather.current.air_quality["gb-defra-index"]}
+                  />
+                </div>
               </div>
             </div>
           </div>
