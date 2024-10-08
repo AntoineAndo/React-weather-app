@@ -23,7 +23,8 @@ function ForecastCard({ forecast, isLoading }: Props) {
 
   return (
     <div
-      className="border-solid border-2 border-[color:--text-primary] rounded-xl"
+      // className="border-solid border-2 border-[color:--text-primary] rounded-xl"
+      className="bg-[color:--background-2] rounded-xl"
       onClick={toggleCard}
     >
       {isLoading ? (

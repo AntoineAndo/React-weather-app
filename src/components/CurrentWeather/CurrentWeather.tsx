@@ -9,17 +9,14 @@ function CurrentWeather({}: Props) {
   const { weather, weatherLoading } = useWeather();
 
   return (
-    <div className="flex flex-col justify-evenly items-center gap-5 h-[50vh] rounded-xl p-3">
+    <div className="flex flex-col flex-grow-[4] justify-evenly items-center gap-5 h-[50vh] rounded-xl lg:h-full">
       {weatherLoading ? (
         <p>Loading...</p>
       ) : (
         <React.Fragment>
           {/* Current date */}
-          <p className="text-2xl font-bold self-start">
-            Today {new Date().toLocaleDateString("fr-FR")}
-          </p>
-          <div className="flex flex-col w-full">
-            <div className="flex flex-col items-center">
+          <div className="flex flex-col w-full h-full md:flex-row bg-[color:--background-2] rounded-2xl justify-evenly lg:flex-col lg:h-full">
+            <div className="flex flex-col items-center md:flex-grow-[2] justify-center">
               {/* Icon for the current condition */}
               <img
                 src={weather.current.condition.icon}
@@ -35,19 +32,19 @@ function CurrentWeather({}: Props) {
             </div>
 
             {/* Day secondary info */}
-            <div className="flex gap-2 w-full justify-between box-border">
+            <div className="flex gap-2 w-full justify-between box-border md:flex-col md:w-auto md:flex-1 lg:flex-row">
               {/* Humidity */}
-              <div className="flex flex-col flex-1 items-center">
+              <div className="flex flex-col flex-1 items-center justify-center">
                 <p className="text-lg">Humidité</p>
                 <p className="text-5xl">{weather.current.humidity}</p>
               </div>
               {/* Wind */}
-              <div className="flex flex-col flex-1 items-center">
+              <div className="flex flex-col flex-1 items-center justify-center">
                 <p className="text-lg">Vent (km/h)</p>
                 <p className="text-5xl">{weather.current.wind_kph}</p>
               </div>
               {/* Air quality */}
-              <div className="flex flex-col flex-1 items-center">
+              <div className="flex flex-col flex-1 items-center justify-center">
                 <p className="text-lg">Qualité d'air</p>
                 <div className="text-5xl">
                   <AirQualityIcon

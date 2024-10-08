@@ -3,8 +3,8 @@
 @tailwind utilities;
 
 :root {
-  --background: rgb(241, 241, 241);
-  --background-2: rgb(255, 255, 255);
+  --background: white;
+  --background-2: rgb(240, 240, 240);
   --text-primary: rgb(16, 16, 16);
   --transparent-text: rgba(16, 16, 16, 0.7);
   --text-secondary: royalblue;
@@ -12,7 +12,7 @@
 }
 
 :root[data-theme='dark'] {
-  --background: rgb(16, 16, 16);
+  --background: black;
   --background-2: rgb(32, 32, 32);
   --text-primary: rgb(241, 241, 241);
   --transparent-text: rgba(241, 241, 241, 0.7);
@@ -46,6 +46,9 @@ body {
 
   display: flex;
   flex-direction: column;
+
+  height: 100%;
+  
 }
 
 @keyframes wave {
