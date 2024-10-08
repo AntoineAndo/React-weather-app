@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
 import style from "./SearchModal.module.scss";
-import { useSettings } from "../../providers/SettingsProvider";
+import { Location, useSettings } from "../../providers/SettingsProvider";
 
 type Props = {
   onBlur: Function;
@@ -8,7 +8,7 @@ type Props = {
 
 function SearchModal({ onBlur }: Props) {
   const [searchValue, setSearchValue] = useState("");
-  const [searchResults, setSearchResults] = useState<any[] | null>(null);
+  const [searchResults, setSearchResults] = useState<any[]>([]);
   const { saveLocation } = useSettings();
 
   const recentLocations = JSON.parse(
@@ -44,7 +44,7 @@ function SearchModal({ onBlur }: Props) {
 
   const clearSearch = () => {
     setSearchValue("");
-    setSearchResults(null);
+    setSearchResults([]);
   };
 
   //   Get the user's current location, save it and close the modal
@@ -52,45 +52,19 @@ function SearchModal({ onBlur }: Props) {
   const setCurrentUserLocation = () => {
     navigator.geolocation.getCurrentPosition((position) => {
       saveLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
+        name: undefined,
+        coordinates: {
+          latitude: position.coords.latitude,
+          longitude: position.coords.longitude,
+        },
       });
       onBlur();
     });
   };
 
   //   Save the selected location and close the modal
-  const onLocationClick = (suggestion: any) => {
-    saveLocation({
-      latitude: suggestion.latitude,
-      longitude: suggestion.longitude,
-    });
-
-    // Add the location to the list of recent locations
-    const newLocation = {
-      name: suggestion.name,
-      latitude: suggestion.latitude,
-      longitude: suggestion.longitude,
-    };
-
-    const recentLocations = localStorage.getItem("recentLocations");
-
-    if (recentLocations) {
-      const recentArray = JSON.parse(recentLocations);
-
-      // Remove the location if it already exists in the list
-      const filteredLocations = recentArray.filter((location: any) => {
-        return location.name !== newLocation.name;
-      });
-
-      localStorage.setItem(
-        "recentLocations",
-        JSON.stringify([newLocation, ...filteredLocations])
-      );
-    } else {
-      localStorage.setItem("recentLocations", JSON.stringify([newLocation]));
-    }
-
+  const onLocationClick = (suggestion: Location) => {
+    saveLocation(suggestion);
     onBlur();
   };
 
@@ -125,20 +99,35 @@ function SearchModal({ onBlur }: Props) {
         */}
         <ul>
           {/* Search results */}
-          {searchResults !== null &&
-            searchResults.map((suggestion: any, index: number) => {
-              return (
-                <Fragment>
-                  <li onClick={() => onLocationClick(suggestion)}>
-                    {suggestion.name}
-                  </li>
-                  {index !== searchResults.length - 1 && <hr />}
-                </Fragment>
-              );
-            })}
+          {searchValue !== "" && (
+            <Fragment>
+              {/* Exact search - Search the exact value of the input */}
+              <li
+                onClick={() =>
+                  onLocationClick({
+                    name: searchValue,
+                  })
+                }
+              >
+                {searchValue}
+              </li>
+              <hr />
+
+              {searchResults.map((suggestion: any, index: number) => {
+                return (
+                  <Fragment>
+                    <li onClick={() => onLocationClick(suggestion)}>
+                      {suggestion.name}
+                    </li>
+                    {index !== searchResults.length - 1 && <hr />}
+                  </Fragment>
+                );
+              })}
+            </Fragment>
+          )}
 
           {/* Default suggestions */}
-          {searchResults === null && (
+          {searchValue === "" && (
             <Fragment>
               {/* Option to set the current user's location */}
               <li onClick={() => setCurrentUserLocation()}>

@@ -8,20 +8,21 @@ import {
 
 type Theme = "light" | "dark";
 
-interface SettingsContextType {
-  currentLocation?: {
+export interface Location {
+  name?: string;
+  coordinates?: {
     latitude: number;
     longitude: number;
   };
+}
+
+interface SettingsContextType {
+  currentLocation?: Location;
   theme: Theme;
   toggleTheme: () => void;
-  saveLocation: ({
-    latitude,
-    longitude,
-  }: {
-    latitude: number;
-    longitude: number;
-  }) => void;
+  saveLocation: ({ name, coordinates }: Location) => void;
+  updateRecentLocations: (location: any) => void;
+  saveStorageLocation: (location: Location) => void;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -41,38 +42,33 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const localTheme = localStorage.getItem("theme") as Theme;
   const [theme, setTheme] = useState<Theme>(localTheme || "light");
 
+  // Clear recent data from local storage
+  // localStorage.removeItem("recentLocations");
+  // localStorage.removeItem("location");
+
   // Get the current location from local storage
   const localLocation = localStorage.getItem("location");
 
   // If the location is set, use it as the initial location
-  // If any of the latitude or longitude is missing, the location is invalid and set to undefined
+  // If the name is missing, the location is invalid and set to undefined
   const initialLocation =
-    localLocation &&
-    JSON.parse(localLocation).latitude &&
-    JSON.parse(localLocation).longitude
+    localLocation && JSON.parse(localLocation).name
       ? JSON.parse(localLocation)
       : undefined;
 
-  // localStorage.removeItem("recentLocations");
-
   // If the location is not set, request user's location
-  const [currentLocation, setCurrentLocation] = useState<{
-    latitude: number;
-    longitude: number;
-  }>(initialLocation);
+  const [currentLocation, setCurrentLocation] =
+    useState<Location>(initialLocation);
 
   // Save the location to local storage
   // Will trigger a re-fetch of the weather data using the new location
-  const saveLocation = ({
-    latitude,
-    longitude,
-  }: {
-    latitude: number;
-    longitude: number;
-  }) => {
-    const location = { latitude, longitude };
+  const saveLocation = (location: Location) => {
     setCurrentLocation(location);
     // Save the location to local storage
+    saveStorageLocation(location);
+  };
+
+  const saveStorageLocation = (location: Location) => {
     localStorage.setItem("location", JSON.stringify(location));
   };
 
@@ -82,13 +78,21 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     if (!initialLocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
-          const location = {
-            latitude: position.coords.latitude,
-            longitude: position.coords.longitude,
+          // Create a location object with the user's coordinates
+          const location: Location = {
+            name: undefined,
+            coordinates: {
+              latitude: position.coords.latitude,
+              longitude: position.coords.longitude,
+            },
           };
+
+          // Set the location in the state
+          // Will trigger a re-fetch of the weather data using the new location
           setCurrentLocation(location);
+
           // Save the location to local storage
-          localStorage.setItem("location", JSON.stringify(location));
+          saveStorageLocation(location);
         },
         (error) => {
           // If the user denies the location request
@@ -116,9 +120,41 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     localStorage.setItem("theme", newTheme);
   };
 
+  /**
+   * Update the list of recent locations in the local storage
+   * @param location The location to add to the list
+   */
+  const updateRecentLocations = (location: any) => {
+    // Add the location to the list of recent locations
+    const recentLocations = localStorage.getItem("recentLocations");
+
+    if (recentLocations) {
+      const recentArray = JSON.parse(recentLocations);
+
+      // Remove the location if it already exists in the list
+      const filteredLocations = recentArray.filter((location: any) => {
+        return location.name !== location.name;
+      });
+
+      localStorage.setItem(
+        "recentLocations",
+        JSON.stringify([location, ...filteredLocations])
+      );
+    } else {
+      localStorage.setItem("recentLocations", JSON.stringify([location]));
+    }
+  };
+
   return (
     <SettingsContext.Provider
-      value={{ theme, toggleTheme, currentLocation, saveLocation }}
+      value={{
+        theme,
+        toggleTheme,
+        currentLocation,
+        saveLocation,
+        saveStorageLocation,
+        updateRecentLocations,
+      }}
     >
       {children}
     </SettingsContext.Provider>
