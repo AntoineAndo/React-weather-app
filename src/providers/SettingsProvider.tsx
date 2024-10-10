@@ -132,8 +132,8 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
       const recentArray = JSON.parse(recentLocations);
 
       // Remove the location if it already exists in the list
-      const filteredLocations = recentArray.filter((location: any) => {
-        return location.name !== location.name;
+      const filteredLocations = recentArray.filter((l: any) => {
+        return location.name !== l.name;
       });
 
       localStorage.setItem(
