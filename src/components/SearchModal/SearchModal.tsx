@@ -68,9 +68,15 @@ function SearchModal({ closeModal }: Props) {
   };
 
   return (
-    <div className="absolute top-0 bg-[color:--transparent-background] w-full h-screen backdrop-blur">
-      // Modal
-      <div className="absolute top-0 left-0 w-full p-5 flex flex-col bg-[color:--background] gap-3 rounded-b-3xl shadow-modal">
+    <div
+      className="absolute top-0 bg-[color:--transparent-background] w-full h-[calc(100vh-88px)] backdrop-blur flex"
+      onClick={() => closeModal()}
+    >
+      {/* // Modal */}
+      <div
+        className="absolute top-0 right-0 w-full p-5 flex flex-col bg-[color:--background] gap-3 rounded-b-3xl shadow-modal lg:w-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         {/* Search input */}
         <div className="border-solid border-2 border-[color:--text-primary] h-8 relative rounded-2xl ">
           <input
