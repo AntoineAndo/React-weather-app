@@ -9,6 +9,7 @@
   --transparent-text: rgba(16, 16, 16, 0.7);
   --text-secondary: royalblue;
   --accent: purple;
+  --error: red;
 }
 
 :root[data-theme='dark'] {
@@ -18,6 +19,7 @@
   --transparent-text: rgba(241, 241, 241, 0.7);
   --text-secondary: grey;
   --accent: darkred;
+  --error: red;
 }
 
 * {

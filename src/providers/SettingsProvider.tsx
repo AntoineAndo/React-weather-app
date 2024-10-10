@@ -64,8 +64,6 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Will trigger a re-fetch of the weather data using the new location
   const saveLocation = (location: Location) => {
     setCurrentLocation(location);
-    // Save the location to local storage
-    saveStorageLocation(location);
   };
 
   const saveStorageLocation = (location: Location) => {

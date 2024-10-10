@@ -11,13 +11,14 @@ const WEEK_NAMES = ["Dim", "Lun", "Mar", "Mer", "Jeu", "Ven", "Sam"];
 type Props = {
   forecast: any;
   isLoading: Boolean;
+  error: string | null;
 };
 
-function ForecastCard({ forecast, isLoading }: Props) {
+function ForecastCard({ forecast, isLoading, error }: Props) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   const toggleCard = () => {
-    if (isLoading) return;
+    if (isLoading || error) return;
     setIsExpanded(!isExpanded);
   };
 
@@ -34,21 +35,25 @@ function ForecastCard({ forecast, isLoading }: Props) {
         <>
           {/* Header */}
           <div className="flex justify-between items-center gap-3 w-full min-h-20 p-3 cursor-pointer">
-            {/* Icon */}
-            <img
-              className="h-8 w-8"
-              src={forecast.day.condition.icon}
-              alt={forecast.day.condition.text}
-            />
+            {!error && (
+              <>
+                {/* Icon */}
+                <img
+                  className="h-8 w-8"
+                  src={forecast.day.condition.icon}
+                  alt={forecast.day.condition.text}
+                />
 
-            {/* Card title */}
-            <p className="flex flex-1 text-lg">
-              {WEEK_NAMES[dayjs(forecast.date).day()]}
-              {". "}
-              {dayjs(forecast.date).format("DD/MM")}
-            </p>
+                {/* Card title */}
+                <p className="flex flex-1 text-lg">
+                  {WEEK_NAMES[dayjs(forecast.date).day()]}
+                  {". "}
+                  {dayjs(forecast.date).format("DD/MM")}
+                </p>
 
-            <span>{isExpanded ? "🔼" : "🔽"}</span>
+                <span>{isExpanded ? "🔼" : "🔽"}</span>
+              </>
+            )}
           </div>
 
           {/* Card body */}

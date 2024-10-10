@@ -43,6 +43,7 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   useEffect(() => {
     const fetchWeather = async () => {
       if (currentLocation) {
+        console.log("currentLocation", currentLocation);
         try {
           const API_ENDPOINT = import.meta.env.VITE_FORECAST_API_ENDPOINT;
           const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -63,43 +64,53 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           const url = new URL(API_ENDPOINT);
           url.search = new URLSearchParams(params).toString();
 
-          const response = await fetch(url.toString());
-          if (!response.ok) {
-            throw new Error("Failed to fetch weather data");
-          }
-          const data = await response.json();
+          fetch(url.toString())
+            .then((response) => {
+              console.log(response);
+              if (!response.ok) {
+                throw new Error("Failed to fetch weather data");
+              }
 
-          // Update the weather state
-          setWeather(data);
+              response.json().then((data) => {
+                // Update the weather state
+                setWeather(data);
 
-          if (!currentLocation.name) {
-            // If the location name is not set, it means we were using the user's current location
-            // We update the location name in the settings
-            // So that when we reload it will be displayed instantly,
-            //   instead of looking for the user's location again
-            saveStorageLocation({
-              name: data.location.name,
-              coordinates: {
-                latitude: data.location.lat,
-                longitude: data.location.lon,
-              },
+                if (!currentLocation.name) {
+                  // If the location name is not set, it means we were using the user's current location
+                  // We update the location name in the settings
+                  // So that when we reload it will be displayed instantly,
+                  //   instead of looking for the user's location again
+                  saveStorageLocation({
+                    name: data.location.name,
+                    coordinates: {
+                      latitude: data.location.lat,
+                      longitude: data.location.lon,
+                    },
+                  });
+                }
+
+                // Update the recent locations
+                // We only update the recent locations if the data fetching is successful
+                // This way we avoid adding invalid locations to the recent locations
+                updateRecentLocations({
+                  name: data.location.name,
+                  coordinates: {
+                    latitude: data.location.lat,
+                    longitude: data.location.lon,
+                  },
+                });
+
+                // Update loading state
+                setWeatherLoading(false);
+                setError(null);
+              });
+            })
+            .catch((err) => {
+              setError(err.message);
+              throw new Error("Failed to fetch weather data");
             });
-          }
-
-          // Update the recent locations
-          // We only update the recent locations if the data fetching is successful
-          // This way we avoid adding invalid locations to the recent locations
-          updateRecentLocations({
-            name: data.location.name,
-            coordinates: {
-              latitude: data.location.lat,
-              longitude: data.location.lon,
-            },
-          });
-
-          // Update loading state
-          setWeatherLoading(false);
         } catch (err: any) {
+          console.log("err1", err);
           setError(err.message);
           setWeatherLoading(false);
         }

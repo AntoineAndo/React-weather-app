@@ -6,7 +6,7 @@ import SearchModal from "../SearchModal/SearchModal";
 type Props = {};
 
 function Header({}: Props) {
-  const { weather, loading: weatherLoading } = useWeather();
+  const { weather, loading: weatherLoading, error } = useWeather();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const openSearch = () => {
@@ -14,7 +14,7 @@ function Header({}: Props) {
   };
 
   return (
-    <header className="flex justify-between items-center p-3 relative">
+    <header className="flex justify-between items-center p-3 sticky top-0 bg-[color:--background] transition">
       {/* Theme toggle */}
       <div className="flex flex-1">
         <ThemeToggle />
