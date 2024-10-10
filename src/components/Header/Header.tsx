@@ -14,7 +14,7 @@ function Header({}: Props) {
   };
 
   return (
-    <header className="flex justify-between items-center p-3 sticky top-0 bg-[color:--background] transition">
+    <header className="flex justify-between items-center p-3 sticky top-0 bg-[color:--background]">
       {/* Theme toggle */}
       <div className="flex flex-1">
         <ThemeToggle />
