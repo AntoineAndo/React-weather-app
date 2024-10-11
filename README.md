@@ -34,6 +34,8 @@ npm install
 npm run dev
 ```
 
+**Note:** Assurez-vous d'avoir ajouté le fichier `.env` fourni par mail qui contient les variables d'environnement indispensables au fonctionnement de l'application
+
 ## Utilisation
 
 Ouvrez votre navigateur et accédez à `http://localhost:5173/` pour utiliser l'application.
