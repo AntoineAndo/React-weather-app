@@ -97,7 +97,7 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           // Save the location to local storage
           saveStorageLocation(location);
         },
-        (error) => {
+        (_) => {
           // If the user denies the location request
           setError(
             "Vous devez autoriser la géolocalisation pour utiliser l'application"

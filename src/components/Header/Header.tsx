@@ -6,7 +6,7 @@ import SearchModal from "../SearchModal/SearchModal";
 type Props = {};
 
 function Header({}: Props) {
-  const { weather, loading: weatherLoading, error } = useWeather();
+  const { weather, loading: weatherLoading } = useWeather();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
 
   const openSearch = () => {
