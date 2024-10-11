@@ -29,7 +29,7 @@ Pour installer et lancer l'application, suivez les étapes ci-dessous :
 
 ```bash
 git clone https://github.com/AntoineAndo/React-weather-app
-cd weather-react
+cd react-weather-app
 npm install
 npm run dev
 ```
