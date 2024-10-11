@@ -51,6 +51,10 @@ function ForecastCard({ forecast, isLoading, error }: Props) {
                   {dayjs(forecast.date).format("DD/MM")}
                 </p>
 
+                <p className="flex flex-1 text-lg">
+                  {forecast.day.mintemp_c}° / {forecast.day.maxtemp_c}°C
+                </p>
+
                 <span>{isExpanded ? "🔼" : "🔽"}</span>
               </>
             )}
