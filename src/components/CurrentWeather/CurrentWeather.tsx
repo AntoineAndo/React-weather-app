@@ -8,13 +8,13 @@ function CurrentWeather({}: Props) {
   const { weather, weatherLoading, error } = useWeather();
 
   return (
-    <div className="flex flex-col flex-grow-[4] justify-evenly items-center gap-5 h-[50vh] rounded-xl lg:h-full">
+    <div className="flex flex-col flex-grow-[4] justify-evenly items-center gap-5 h-[50vh] rounded-xl lg:h-full lg:justify-start">
       {weatherLoading ? (
         <p>Loading...</p>
       ) : (
         <React.Fragment>
           {/* Current date */}
-          <div className="flex flex-col w-full h-full md:flex-row bg-[color:--background-2] rounded-2xl justify-evenly lg:flex-col lg:h-full lg:p-5">
+          <div className="flex flex-col w-full h-full md:flex-row bg-[color:--background-2] rounded-2xl justify-evenly lg:flex-col lg:h-fit lg:p-5">
             {/* If error, display the error */}
             {error && (
               <div className="text-[color:--error] text-center font-semibold">
