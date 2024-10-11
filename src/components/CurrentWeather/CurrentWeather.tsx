@@ -16,7 +16,7 @@ function CurrentWeather({}: Props) {
       ) : (
         <React.Fragment>
           {/* Current date */}
-          <div className="flex flex-col w-full h-full md:flex-row bg-[color:--background-2] rounded-2xl justify-evenly lg:flex-col lg:h-full">
+          <div className="flex flex-col w-full h-full md:flex-row bg-[color:--background-2] rounded-2xl justify-evenly lg:flex-col lg:h-full lg:p-5">
             {/* If error, display the error */}
             {error && (
               <div className="text-[color:--error] text-center font-semibold">
