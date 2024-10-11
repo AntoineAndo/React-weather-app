@@ -1,6 +1,7 @@
 import React from "react";
 import { useWeather } from "../../providers/WeatherProvider";
 import AirQualityIcon from "../AirQualityIcon/AirQualityIcon";
+import { useSettings } from "../../providers/SettingsProvider";
 // import style from "./CurrentWeather.module.scss";
 
 type Props = {};

@@ -32,8 +32,12 @@ export const useWeather = () => {
 };
 
 const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const { currentLocation, updateRecentLocations, saveStorageLocation } =
-    useSettings();
+  const {
+    currentLocation,
+    updateRecentLocations,
+    saveStorageLocation,
+    error: settingsError,
+  } = useSettings();
 
   // todo weatherdata type
   const [weather, setWeather] = useState<any | null>(null);
@@ -41,9 +45,14 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    if (settingsError) {
+      setError(settingsError);
+      setWeatherLoading(false);
+      return;
+    }
+
     const fetchWeather = async () => {
       if (currentLocation) {
-        console.log("currentLocation", currentLocation);
         try {
           const API_ENDPOINT = import.meta.env.VITE_FORECAST_API_ENDPOINT;
           const API_KEY = import.meta.env.VITE_WEATHER_API_KEY;
@@ -118,7 +127,7 @@ const WeatherProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
     };
 
     fetchWeather();
-  }, [currentLocation]);
+  }, [currentLocation, settingsError]);
 
   return (
     <WeatherContext.Provider value={{ weather, weatherLoading, error }}>

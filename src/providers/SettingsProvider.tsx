@@ -23,6 +23,7 @@ interface SettingsContextType {
   saveLocation: ({ name, coordinates }: Location) => void;
   updateRecentLocations: (location: any) => void;
   saveStorageLocation: (location: Location) => void;
+  error: string | null;
 }
 
 const SettingsContext = createContext<SettingsContextType | undefined>(
@@ -41,6 +42,7 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Get the theme from local storage
   const localTheme = localStorage.getItem("theme") as Theme;
   const [theme, setTheme] = useState<Theme>(localTheme || "light");
+  const [error, setError] = useState<string | null>(null);
 
   // Clear recent data from local storage
   // localStorage.removeItem("recentLocations");
@@ -64,6 +66,7 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   // Will trigger a re-fetch of the weather data using the new location
   const saveLocation = (location: Location) => {
     setCurrentLocation(location);
+    setError(null);
   };
 
   const saveStorageLocation = (location: Location) => {
@@ -89,12 +92,17 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
           // Will trigger a re-fetch of the weather data using the new location
           setCurrentLocation(location);
 
+          setError(null);
+
           // Save the location to local storage
           saveStorageLocation(location);
         },
         (error) => {
           // If the user denies the location request
-          console.error("Error getting location:", error);
+          setError(
+            "Vous devez autoriser la géolocalisation pour utiliser l'application"
+          );
+          // setCurrentLocation({}:);
         }
       );
     } else {
@@ -152,6 +160,7 @@ const SettingsProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
         saveLocation,
         saveStorageLocation,
         updateRecentLocations,
+        error,
       }}
     >
       {children}
