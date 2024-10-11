@@ -8,6 +8,7 @@ interface Props {
 function SearchModal({ closeModal }: Props) {
   const [searchValue, setSearchValue] = useState("");
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const { saveLocation } = useSettings();
 
   const recentLocations = JSON.parse(
@@ -30,15 +31,20 @@ function SearchModal({ closeModal }: Props) {
     const url = new URL(ENDPOINT);
     url.search = params.toString();
 
+    setIsLoading(true);
     fetch(url.toString(), {
       headers: {
         "x-api-key": KEY,
       },
-    }).then((response) => {
-      response.json().then((data) => {
-        setSearchResults(data);
+    })
+      .then((response) => {
+        response.json().then((data) => {
+          setSearchResults(data);
+        });
+      })
+      .finally(() => {
+        setIsLoading(false);
       });
-    });
   };
 
   const clearSearch = () => {
@@ -132,6 +138,12 @@ function SearchModal({ closeModal }: Props) {
                   </Fragment>
                 );
               })}
+              {isLoading && (
+                <i
+                  className="fa fa-refresh animate-spin text-center"
+                  aria-hidden="true"
+                ></i>
+              )}
             </Fragment>
           )}
 
